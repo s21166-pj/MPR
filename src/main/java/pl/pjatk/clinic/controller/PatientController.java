@@ -7,6 +7,7 @@ import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.PatientService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/patient")
@@ -21,6 +22,16 @@ public class PatientController {
     @GetMapping
     public ResponseEntity<List<Patient>> findAll() {
         return ResponseEntity.ok(patientService.findAll());
+    }
+
+    @GetMapping("/{pesel}")
+    public ResponseEntity<Optional<Patient>> findByPesel (@PathVariable String pesel) {
+        Optional<Patient> byPesel = patientService.findByPesel(pesel);
+        if (byPesel.isPresent()) {
+            return ResponseEntity.ok(byPesel);
+        } else {
+            throw new IllegalArgumentException("No match found");
+        }
     }
 
     @PostMapping
