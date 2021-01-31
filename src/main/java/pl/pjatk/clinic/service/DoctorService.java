@@ -13,6 +13,7 @@ public class DoctorService {
 
     DoctorRepository doctorRepository;
 
+
     public DoctorService(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
@@ -22,11 +23,12 @@ public class DoctorService {
     }
 
     public Doctor save(Doctor doctor) throws IllegalArgumentException {
-        if (doctor.getName().matches("[a-zA-Z]+") && doctor.getSurname().matches("[a-zA-Z]+")) {
-            return doctorRepository.save(doctor);
+        if (!NameValidator.isValidName(doctor.getName())) {
+            throw new IllegalArgumentException("Name can consist of only letters or is empty");
+        } else if (!NameValidator.isValidName(doctor.getSurname())) {
+            throw new IllegalArgumentException("Surname can consist of only letters or is empty");
         } else {
-            throw new IllegalArgumentException();
+            return doctorRepository.save(doctor);
         }
     }
-
 }
