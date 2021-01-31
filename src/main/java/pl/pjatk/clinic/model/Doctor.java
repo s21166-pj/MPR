@@ -16,8 +16,7 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(int id, String name, String surname) {
-        this.id = id;
+    public Doctor(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
