@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
-        return new ResponseEntity<>("IllegalArgumentException: Incorrect argument/s.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.toString(), HttpStatus.BAD_REQUEST);
     }
-
 }
