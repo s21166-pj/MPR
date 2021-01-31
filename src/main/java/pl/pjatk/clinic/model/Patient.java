@@ -8,7 +8,7 @@ public class Patient {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private int id;
     private String name;
     private String surname;
     private String pesel;
@@ -17,17 +17,16 @@ public class Patient {
     }
 
     public Patient(String name, String surname, String pesel) {
-        this.id = id;
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
