@@ -38,4 +38,9 @@ public class PatientController {
     public ResponseEntity<Patient> save (@RequestBody Patient patient) throws PeselException {
         return ResponseEntity.ok(patientService.save(patient));
     }
+
+    @PutMapping("/{pesel}")
+    public ResponseEntity<Patient> update(@PathVariable String pesel, @RequestBody Patient patient) {
+        return ResponseEntity.ok(patientService.update(pesel, patient));
+    }
 }
