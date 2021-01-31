@@ -2,10 +2,11 @@ package pl.pjatk.clinic.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pjatk.clinic.exception.PeselException;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.PatientService;
+import pl.pjatk.clinic.validators.Validator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class PatientController {
     }
 
     @GetMapping("/{pesel}")
-    public ResponseEntity<Optional<Patient>> findByPesel (@PathVariable String pesel) {
+    public ResponseEntity<Optional<Patient>> findByPesel(@PathVariable String pesel) {
         Optional<Patient> byPesel = patientService.findByPesel(pesel);
         if (byPesel.isPresent()) {
             return ResponseEntity.ok(byPesel);
@@ -35,8 +36,15 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<Patient> save (@RequestBody Patient patient) throws PeselException {
-        return ResponseEntity.ok(patientService.save(patient));
+    public ResponseEntity<Patient> save(@RequestBody Patient patient) {
+        Validator validator = new Validator();
+        List<String> messages;
+        messages = validator.validatePatient(patient);
+        if (messages.isEmpty()) {
+            return ResponseEntity.ok(patientService.save(patient));
+        } else {
+            throw new IllegalArgumentException(messages.toString());
+        }
     }
 
     @PutMapping("/{pesel}")
@@ -44,7 +52,7 @@ public class PatientController {
         return ResponseEntity.ok(patientService.update(pesel, patient));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         patientService.deleteById(id);
         return ResponseEntity.ok().build();
