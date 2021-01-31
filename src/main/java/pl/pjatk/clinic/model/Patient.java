@@ -1,13 +1,13 @@
 package pl.pjatk.clinic.model;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 public class Patient {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String surname;

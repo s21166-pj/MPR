@@ -12,11 +12,16 @@ public class PatientService {
 
     private PatientRepository patientRepository;
 
+    public PatientService(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
     public List<Patient> findAll() {
         return patientRepository.findAll();
     }
 
     public Patient save(Patient patient) throws PeselException {
+        //Checking if pesel is valid
         if (checkPesel(patient.getPesel())) {
             return patientRepository.save(patient);
         } else {
