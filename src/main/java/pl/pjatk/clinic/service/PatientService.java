@@ -1,11 +1,13 @@
 package pl.pjatk.clinic.service;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.pjatk.clinic.exception.PeselException;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.PatientRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -20,12 +22,20 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
+    public Optional<Patient> findByPesel (String pesel) {
+        return patientRepository.findPatientByPesel(pesel);
+    }
+
+
     public Patient save(Patient patient) throws PeselException {
-        //Checking if pesel is valid
-        if (checkPesel(patient.getPesel())) {
-            return patientRepository.save(patient);
-        } else {
+        if (!NameValidator.isValidName(patient.getName())) {
+            throw new IllegalArgumentException("Name can consist of only letters or is empty");
+        } else if (!NameValidator.isValidName(patient.getSurname())) {
+            throw new IllegalArgumentException("Surname can consist of only letters or is empty");
+        }else if (!checkPesel(patient.getPesel())) {
             throw new PeselException();
+        } else {
+            return patientRepository.save(patient);
         }
     }
 
