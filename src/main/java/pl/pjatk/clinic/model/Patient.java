@@ -2,7 +2,6 @@ package pl.pjatk.clinic.model;
 
 import javax.persistence.*;
 
-
 @Entity
 public class Patient {
 
