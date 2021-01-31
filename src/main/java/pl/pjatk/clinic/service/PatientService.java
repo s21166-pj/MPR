@@ -1,7 +1,5 @@
 package pl.pjatk.clinic.service;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.pjatk.clinic.exception.PeselException;
 import pl.pjatk.clinic.model.Patient;
@@ -41,6 +39,14 @@ public class PatientService {
         }
     }
 
+    public void deleteById(int id) {
+        patientRepository.deleteById(id);
+    }
+
+    public void deleteAll() {
+        patientRepository.deleteAll();
+    }
+
     public Patient save(Patient patient) throws PeselException {
         //checks name, surname and pesel for validation
         //also prevents from saving patient with the same pesel no.
@@ -51,7 +57,7 @@ public class PatientService {
         } else if (!checkPesel(patient.getPesel())) {
             throw new PeselException();
         } else if (patientRepository.findPatientByPesel(patient.getPesel()).isPresent()) {
-            throw new IllegalArgumentException("Patient with this pesel already exists");
+            throw new IllegalArgumentException("Patient with this PESEL already exists");
         } else {
             return patientRepository.save(patient);
         }
