@@ -26,6 +26,18 @@ public class PatientService {
         return patientRepository.findPatientByPesel(pesel);
     }
 
+    public Patient update (String pesel, Patient updatedPatient) {
+        Optional<Patient> patientOptional = patientRepository.findPatientByPesel(pesel);
+        if (patientOptional.isPresent()) {
+            Patient patient = patientOptional.get();
+            patient.setName(updatedPatient.getName());
+            patient.setSurname(updatedPatient.getSurname());
+            patient.setPesel(updatedPatient.getPesel());
+            return patientRepository.save(patient);
+        } else {
+            return null;
+        }
+    }
 
     public Patient save(Patient patient) throws PeselException {
         if (!NameValidator.isValidName(patient.getName())) {
