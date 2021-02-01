@@ -1,4 +1,7 @@
 package pl.pjatk.clinic.exception;
 
-public class PeselException extends Exception{
+public class PatientException extends Exception{
+    public PatientException(String errorMessage) {
+        super(errorMessage);
+    }
 }

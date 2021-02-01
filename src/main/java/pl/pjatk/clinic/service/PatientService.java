@@ -1,10 +1,9 @@
 package pl.pjatk.clinic.service;
 
 import org.springframework.stereotype.Service;
-import pl.pjatk.clinic.exception.PeselException;
+import pl.pjatk.clinic.exception.PatientException;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.PatientRepository;
-import pl.pjatk.clinic.validators.Validator;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +21,17 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> findByPesel(String pesel) {
-        return patientRepository.findPatientByPesel(pesel);
+    public Optional<Patient> findById(int id) {
+        return patientRepository.findById(id);
+    }
+
+
+    public Optional<Patient> findByPesel(String pesel) throws PatientException {
+        if (patientRepository.findPatientByPesel(pesel).isPresent()) {
+            return patientRepository.findPatientByPesel(pesel);
+        } else {
+            throw new PatientException("There is no one with this PESEL");
+        }
     }
 
     public Patient update(String pesel, Patient updatedPatient) {
@@ -40,12 +48,20 @@ public class PatientService {
         }
     }
 
-    public void deleteById(int id) {
-        patientRepository.deleteById(id);
+    public void deleteById(int id) throws PatientException {
+        if (patientRepository.findById(id).isPresent()) {
+            patientRepository.deleteById(id);
+        } else {
+            throw new PatientException("There is no such patient to delete");
+        }
     }
 
-    public void deleteAll() {
-        patientRepository.deleteAll();
+    public void deleteAll() throws PatientException {
+        if (patientRepository.findAll().isEmpty()) {
+            throw new PatientException("Repository is empty");
+        } else {
+            patientRepository.deleteAll();
+        }
     }
 
     public Patient save(Patient patient) {
