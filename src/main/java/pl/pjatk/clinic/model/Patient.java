@@ -1,5 +1,7 @@
 package pl.pjatk.clinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,13 +14,19 @@ public class Patient {
     private String surname;
     private String pesel;
 
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    @JsonIgnore
+    private Doctor doctor;
+
     public Patient() {
     }
 
-    public Patient(String name, String surname, String pesel) {
+    public Patient(String name, String surname, String pesel, Doctor doctor) {
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
+        this.doctor = doctor;
     }
 
     public int getId() {
