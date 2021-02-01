@@ -26,8 +26,8 @@ public class PatientController {
         return ResponseEntity.ok(patientService.findAll());
     }
 
-    @GetMapping("/{Id}")
-    public ResponseEntity<Optional<Patient>> findById(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Patient>> findById(@PathVariable int id) throws PatientException {
         Optional<Patient> findById = patientService.findById(id);
         if (findById.isPresent()) {
             return ResponseEntity.ok(findById);
@@ -37,7 +37,7 @@ public class PatientController {
     }
 
 
-    @GetMapping("/{pesel}")
+    @GetMapping("/bypesel/{pesel}")
     public ResponseEntity<Optional<Patient>> findByPesel(@PathVariable String pesel) throws PatientException {
         Optional<Patient> byPesel = patientService.findByPesel(pesel);
         if (byPesel.isPresent()) {
