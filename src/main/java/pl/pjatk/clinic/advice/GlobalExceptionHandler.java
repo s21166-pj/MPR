@@ -12,12 +12,12 @@ import pl.pjatk.clinic.exception.PatientException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PatientException.class)
-    public ResponseEntity<Object> handlePeselException(PatientException ex) {
+    public ResponseEntity<Object> handlePatientException(PatientException ex) {
         return new ResponseEntity<>(ex.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DoctorException.class)
-    public ResponseEntity<Object> handlePeselException(DoctorException ex) {
+    public ResponseEntity<Object> handleDoctorException(DoctorException ex) {
         return new ResponseEntity<>(ex.toString(), HttpStatus.BAD_REQUEST);
     }
 
