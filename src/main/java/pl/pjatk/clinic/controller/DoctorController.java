@@ -2,6 +2,7 @@ package pl.pjatk.clinic.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.service.DoctorService;
 import pl.pjatk.clinic.validators.Validator;
@@ -26,12 +27,12 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Doctor>> findById(@PathVariable int id) {
+    public ResponseEntity<Optional<Doctor>> findById(@PathVariable int id) throws DoctorException {
         Optional<Doctor> byId = doctorService.findById(id);
         if (byId.isPresent()) {
             return ResponseEntity.ok(byId);
         } else {
-            throw new IllegalArgumentException("No match found");
+            throw new DoctorException("No match found");
         }
     }
 
@@ -53,13 +54,13 @@ public class DoctorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable int id) throws DoctorException {
         doctorService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<List<Doctor>> deleteAll() {
+    public ResponseEntity<List<Doctor>> deleteAll() throws DoctorException {
         doctorService.deleteAll();
         return ResponseEntity.ok().build();
     }

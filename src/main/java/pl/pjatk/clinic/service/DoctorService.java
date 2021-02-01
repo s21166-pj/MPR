@@ -2,9 +2,9 @@ package pl.pjatk.clinic.service;
 
 
 import org.springframework.stereotype.Service;
+import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.repository.DoctorRepository;
-import pl.pjatk.clinic.validators.Validator;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,9 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public Optional<Doctor> findById(int id) {
+    public Optional<Doctor> findById(int id) throws DoctorException {
         if (id < 0) {
-            throw new IllegalArgumentException("There is no negative IDs");
+            throw new DoctorException("There is no negative IDs");
         } else {
             return doctorRepository.findById(id);
         }
@@ -42,12 +42,20 @@ public class DoctorService {
         }
     }
 
-    public void deleteById(int id) {
-        doctorRepository.deleteById(id);
+    public void deleteById(int id) throws DoctorException {
+        if (doctorRepository.findById(id).isPresent()) {
+            doctorRepository.deleteById(id);
+        } else {
+            throw new DoctorException("There is no such patient to delete");
+        }
     }
 
-    public void deleteAll() {
-        doctorRepository.deleteAll();
+    public void deleteAll() throws DoctorException {
+        if (doctorRepository.findAll().isEmpty()) {
+            throw new DoctorException("Repository is empty");
+        } else {
+            doctorRepository.deleteAll();
+        }
     }
 
     public Doctor save(Doctor doctor) {
