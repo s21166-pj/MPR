@@ -7,7 +7,6 @@ import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.PatientService;
 import pl.pjatk.clinic.validators.Validator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,6 @@ public class PatientController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @GetMapping("/bypesel/{pesel}")
     public ResponseEntity<Optional<Patient>> findByPesel(@PathVariable String pesel) throws PatientException {

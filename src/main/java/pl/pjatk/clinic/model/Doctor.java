@@ -1,5 +1,7 @@
 package pl.pjatk.clinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,14 @@ public class Doctor {
     private String surname;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Patient> patientList = new ArrayList<>();
 
     public Doctor() {
+    }
+
+    public Doctor(int id) {
+        this.id = id;
     }
 
     public Doctor(String name, String surname, List<Patient> patientList) {

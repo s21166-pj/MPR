@@ -16,7 +16,6 @@ public class Patient {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    @JsonIgnore
     private Doctor doctor;
 
     public Patient() {

@@ -23,9 +23,9 @@ public class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public Optional<List<Patient>> listOfPatients (int id, Doctor doctor) throws DoctorException {
+    public Optional<List<Patient>> listOfPatients(int id) throws DoctorException {
         Optional<Doctor> doctorId = doctorRepository.findById(id);
-        if(doctorId.isPresent()) {
+        if (doctorId.isPresent()) {
             return Optional.ofNullable(doctorId.get().getPatientList());
         } else {
             throw new DoctorException("There is no patients!");

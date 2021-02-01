@@ -72,7 +72,8 @@ public class PatientService {
         if (patientRepository.findByPesel(patient.getPesel()).isPresent()) {
             throw new PatientException("There is Patient with this PESEL already");
         } else {
-            return patientRepository.save(patient);
+            patientRepository.saveAndFlush(patient);
+            return patientRepository.findById(patient.getId()).get();
         }
     }
 }

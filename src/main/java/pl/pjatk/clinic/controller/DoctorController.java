@@ -7,8 +7,6 @@ import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.DoctorService;
 import pl.pjatk.clinic.validators.Validator;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +36,8 @@ public class DoctorController {
     }
 
     @GetMapping("/{id}/patientList")
-    public ResponseEntity<Optional<List<Patient>>> listOfPatients (@PathVariable int id, @RequestBody Doctor doctor) throws DoctorException {
-        return ResponseEntity.ok(doctorService.listOfPatients(id, doctor));
+    public ResponseEntity<Optional<List<Patient>>> listOfPatients(@PathVariable int id) throws DoctorException {
+        return ResponseEntity.ok(doctorService.listOfPatients(id));
     }
 
     @PostMapping
