@@ -61,6 +61,14 @@ public class Patient {
         this.pesel = pesel;
     }
 
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +

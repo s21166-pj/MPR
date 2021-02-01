@@ -49,6 +49,14 @@ public class Doctor {
         this.surname = surname;
     }
 
+    public List<Patient> getPatientList() {
+        return patientList;
+    }
+
+    public void setPatientList(List<Patient> patientList) {
+        this.patientList = patientList;
+    }
+
     @Override
     public String toString() {
         return "Doctor{" +
