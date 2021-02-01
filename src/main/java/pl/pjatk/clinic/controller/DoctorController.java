@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.model.Doctor;
+import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.DoctorService;
 import pl.pjatk.clinic.validators.Validator;
 
@@ -34,6 +35,11 @@ public class DoctorController {
         } else {
             throw new DoctorException("No match found");
         }
+    }
+
+    @GetMapping("/{id}/patientList")
+    public ResponseEntity<Optional<List<Patient>>> listOfPatients (@PathVariable int id, @RequestBody Doctor doctor) throws DoctorException {
+        return ResponseEntity.ok(doctorService.listOfPatients(id, doctor));
     }
 
     @PostMapping

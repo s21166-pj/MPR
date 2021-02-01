@@ -5,6 +5,7 @@ import pl.pjatk.clinic.exception.PatientException;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.PatientRepository;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,21 +22,24 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> findById(int id) {
-        return patientRepository.findById(id);
+    public Optional<Patient> findById(int id) throws PatientException {
+        if (id < 0) {
+            throw new PatientException("There is no negative IDs");
+        } else {
+            return patientRepository.findById(id);
+        }
     }
 
-
     public Optional<Patient> findByPesel(String pesel) throws PatientException {
-        if (patientRepository.findPatientByPesel(pesel).isPresent()) {
-            return patientRepository.findPatientByPesel(pesel);
+        if (patientRepository.findByPesel(pesel).isPresent()) {
+            return patientRepository.findByPesel(pesel);
         } else {
             throw new PatientException("There is no one with this PESEL");
         }
     }
 
     public Patient update(String pesel, Patient updatedPatient) {
-        Optional<Patient> patientOptional = patientRepository.findPatientByPesel(pesel);
+        Optional<Patient> patientOptional = patientRepository.findByPesel(pesel);
         if (patientOptional.isPresent()) {
             Patient patient = patientOptional.get();
             patient.setName(updatedPatient.getName());
@@ -64,9 +68,9 @@ public class PatientService {
         }
     }
 
-    public Patient save(Patient patient) {
-        if (patientRepository.findPatientByPesel(patient.getPesel()).isPresent()) {
-            throw new IllegalArgumentException("There is Patient with this PESEL already");
+    public Patient save(Patient patient) throws PatientException {
+        if (patientRepository.findByPesel(patient.getPesel()).isPresent()) {
+            throw new PatientException("There is Patient with this PESEL already");
         } else {
             return patientRepository.save(patient);
         }

@@ -4,6 +4,7 @@ package pl.pjatk.clinic.service;
 import org.springframework.stereotype.Service;
 import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.model.Doctor;
+import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.DoctorRepository;
 
 import java.util.List;
@@ -20,6 +21,15 @@ public class DoctorService {
 
     public List<Doctor> findAll() {
         return doctorRepository.findAll();
+    }
+
+    public Optional<List<Patient>> listOfPatients (int id, Doctor doctor) throws DoctorException {
+        Optional<Doctor> doctorId = doctorRepository.findById(id);
+        if(doctorId.isPresent()) {
+            return Optional.ofNullable(doctorId.get().getPatientList());
+        } else {
+            throw new DoctorException("There is no patients!");
+        }
     }
 
     public Optional<Doctor> findById(int id) throws DoctorException {
