@@ -14,39 +14,45 @@ public class Validator {
     }
 
     public List<String> validatePatient(Patient patient) {
-        List<String> listOfString = new ArrayList<>();
-        listOfString.add(validateName(patient.getName()));
-        listOfString.add(validateSurName(patient.getSurname()));
-        listOfString.add(validatePesel(patient.getPesel()));
+        List<String> listOfErrors = new ArrayList<>();
+        listOfErrors.add(validateName(patient.getName()));
+        listOfErrors.add(validateSurName(patient.getSurname()));
+        listOfErrors.add(validatePesel(patient.getPesel()));
 
-        return listOfString.parallelStream()
+        return listOfErrors.parallelStream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
     public List<String> validateDoctor(Doctor doctor) {
-        List<String> listOfString = new ArrayList<>();
-        listOfString.add(validateName(doctor.getName()));
-        listOfString.add(validateSurName(doctor.getSurname()));
+        List<String> listOfErrors = new ArrayList<>();
+        listOfErrors.add(validateName(doctor.getName()));
+        listOfErrors.add(validateSurName(doctor.getSurname()));
 
-        return listOfString.parallelStream()
+        return listOfErrors.parallelStream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
     public String validateName(String name) {
-        if (!name.isEmpty() && name.matches("[a-zA-Z]+")) {
-            return null;
+//        if (!name.isEmpty() && name.matches("[a-zA-Z]+"))
+        if (name.isEmpty()) {
+            return "Name cannot be empty";
+        } else if (!name.matches("[a-zA-Z]+")) {
+            return "Name can consist of only letters ";
         } else {
-            return "Name can consist of only letters or is empty";
+            return null;
         }
     }
 
     public String validateSurName(String surname) {
-        if (!surname.isEmpty() && surname.matches("[a-zA-Z]+")) {
-            return null;
+//        if (!surname.isEmpty() && surname.matches("[a-zA-Z]+")) {
+        if (surname.isEmpty()) {
+            return "Surname cannot be empty";
+        } else if (!surname.matches("[a-zA-Z]+")) {
+            return "Surname can consist of only letters ";
         } else {
-            return "Surname can consist of only letters or is empty";
+            return null;
         }
     }
 
