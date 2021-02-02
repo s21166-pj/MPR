@@ -1,8 +1,7 @@
 package pl.pjatk.clinic.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Patient {
@@ -13,6 +12,7 @@ public class Patient {
     private String name;
     private String surname;
     private String pesel;
+    private Date dateOfConsultation;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -21,10 +21,11 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String name, String surname, String pesel, Doctor doctor) {
+    public Patient(String name, String surname, String pesel, Date dateOfConsultation, Doctor doctor) {
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
+        this.dateOfConsultation = dateOfConsultation;
         this.doctor = doctor;
     }
 
@@ -60,6 +61,14 @@ public class Patient {
         this.pesel = pesel;
     }
 
+    public Date getDateOfConsultation() {
+        return dateOfConsultation;
+    }
+
+    public void setDateOfConsultation(Date dateOfConsultation) {
+        this.dateOfConsultation = dateOfConsultation;
+    }
+
     public Doctor getDoctor() {
         return doctor;
     }
@@ -74,7 +83,9 @@ public class Patient {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", pesel=" + pesel +
+                ", pesel='" + pesel + '\'' +
+                ", dateOfConsultation=" + dateOfConsultation +
+                ", doctor=" + doctor +
                 '}';
     }
 }

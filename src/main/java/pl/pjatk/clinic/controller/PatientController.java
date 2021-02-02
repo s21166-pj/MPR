@@ -1,5 +1,6 @@
 package pl.pjatk.clinic.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pjatk.clinic.exception.PatientException;
@@ -7,6 +8,7 @@ import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.PatientService;
 import pl.pjatk.clinic.validators.Validator;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +44,16 @@ public class PatientController {
             return ResponseEntity.ok(byPesel);
         } else {
             throw new PatientException("No match found");
+        }
+    }
+
+    @GetMapping("/bydate/{date}")
+    public ResponseEntity<List<Patient>> findAllByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws PatientException {
+        List<Patient> allByDate = patientService.findAllByDate(date);
+        if (!allByDate.isEmpty()) {
+            return ResponseEntity.ok(allByDate);
+        } else {
+            throw new PatientException("There are no patients after this date");
         }
     }
 

@@ -1,11 +1,13 @@
 package pl.pjatk.clinic.service;
 
 import org.springframework.stereotype.Service;
+import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.exception.PatientException;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.PatientRepository;
 
-import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,22 @@ public class PatientService {
             return patientRepository.findByPesel(pesel);
         } else {
             throw new PatientException("There is no one with this PESEL");
+        }
+    }
+
+    public List<Patient> findAllByDate(Date searchDate) throws PatientException {
+        List<Patient> patientList = patientRepository.findAll();
+        List<Patient> foundPatientList = new ArrayList<>();
+        for (Patient patient : patientList) {
+            if (patient.getDateOfConsultation().after(searchDate)) {
+                foundPatientList.add(patient);
+            }
+
+        }
+        if (foundPatientList.isEmpty()) {
+            throw new PatientException("There are no patients after this date");
+        } else {
+            return foundPatientList;
         }
     }
 
