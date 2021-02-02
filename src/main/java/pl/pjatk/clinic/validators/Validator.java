@@ -39,7 +39,7 @@ public class Validator {
         if (name.isEmpty()) {
             return "Name cannot be empty";
         } else if (!name.matches("[a-zA-Z]+")) {
-            return "Name can consist of only letters ";
+            return "Name can consist of only letters";
         } else {
             return null;
         }
@@ -50,7 +50,7 @@ public class Validator {
         if (surname.isEmpty()) {
             return "Surname cannot be empty";
         } else if (!surname.matches("[a-zA-Z]+")) {
-            return "Surname can consist of only letters ";
+            return "Surname can consist of only letters";
         } else {
             return null;
         }
@@ -59,7 +59,11 @@ public class Validator {
     public String validatePesel(String pesel) {
         int[] controlWeight = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
 
-        if (pesel.length() != 11) return "Pesel has incorrect length";
+        if(pesel==null) {
+            return "Pesel is NULL";
+        } else if (pesel.length() != 11) {
+            return "Pesel has incorrect length";
+        }
         int controlSum = 0;
         for (int i = 0; i < 10; i++)
 
