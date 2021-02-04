@@ -1,7 +1,9 @@
 package pl.pjatk.clinic.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Patient {
@@ -12,7 +14,8 @@ public class Patient {
     private String name;
     private String surname;
     private String pesel;
-    private Date dateOfConsultation;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfConsultation;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -21,7 +24,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String name, String surname, String pesel, Date dateOfConsultation, Doctor doctor) {
+    public Patient(String name, String surname, String pesel, LocalDate dateOfConsultation, Doctor doctor) {
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
@@ -61,11 +64,11 @@ public class Patient {
         this.pesel = pesel;
     }
 
-    public Date getDateOfConsultation() {
+    public LocalDate getDateOfConsultation() {
         return dateOfConsultation;
     }
 
-    public void setDateOfConsultation(Date dateOfConsultation) {
+    public void setDateOfConsultation(LocalDate dateOfConsultation) {
         this.dateOfConsultation = dateOfConsultation;
     }
 
