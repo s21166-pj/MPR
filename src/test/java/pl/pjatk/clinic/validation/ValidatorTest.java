@@ -2,7 +2,10 @@ package pl.pjatk.clinic.validation;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.validators.Validator;
+
+import java.time.LocalDate;
 
 public class ValidatorTest {
 
@@ -79,5 +82,33 @@ public class ValidatorTest {
         Validator validator = new Validator();
         String surName = "B4dyli4n0";
         Assertions.assertEquals("Surname can consist of only letters", validator.validateSurName(surName));
+    }
+
+    @Test
+    void testDate() {
+        Validator validator = new Validator();
+        LocalDate date = LocalDate.parse("2021-02-13");
+        Assertions.assertNull(validator.validateDate(date));
+    }
+
+    @Test
+    void testDateIsNull() {
+        Validator validator = new Validator();
+        LocalDate date = null;
+        Assertions.assertEquals("Date is empty, please use \"yyyy-MM-dd\" format", validator.validateDate(date));
+    }
+
+    @Test
+    void testHasDoctor() {
+        Validator validator = new Validator();
+        Doctor doctor = new Doctor(1);
+        Assertions.assertNull(validator.validateHasDoctor(doctor));
+    }
+
+    @Test
+    void testHasDoctorNull() {
+        Validator validator = new Validator();
+        Doctor doctor = null;
+        Assertions.assertEquals("You cannot save patient without giving doctor ID", validator.validateHasDoctor(doctor));
     }
 }

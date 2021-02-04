@@ -3,6 +3,7 @@ package pl.pjatk.clinic.validators;
 import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.model.Patient;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +19,8 @@ public class Validator {
         listOfErrors.add(validateName(patient.getName()));
         listOfErrors.add(validateSurName(patient.getSurname()));
         listOfErrors.add(validatePesel(patient.getPesel()));
+        listOfErrors.add(validateDate(patient.getDateOfConsultation()));
+        listOfErrors.add(validateHasDoctor(patient.getDoctor()));
 
         return listOfErrors.parallelStream()
                 .filter(Objects::nonNull)
@@ -59,7 +62,7 @@ public class Validator {
     public String validatePesel(String pesel) {
         int[] controlWeight = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
 
-        if(pesel==null) {
+        if (pesel == null) {
             return "Pesel is NULL";
         } else if (pesel.length() != 11) {
             return "Pesel has incorrect length";
@@ -79,6 +82,22 @@ public class Validator {
             return null;
         } else {
             return "Pesel is incorrect";
+        }
+    }
+
+    public String validateDate(LocalDate dateToFormat) {
+        if (dateToFormat == null) {
+            return "Date is empty, please use \"yyyy-MM-dd\" format";
+        } else {
+            return null;
+        }
+    }
+
+    public String validateHasDoctor(Doctor doctor) {
+        if (doctor == null) {
+            return "You cannot save patient without giving doctor ID";
+        } else {
+            return null;
         }
     }
 }
