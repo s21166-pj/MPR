@@ -8,6 +8,8 @@ import org.springframework.web.context.request.WebRequest;
 import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.exception.PatientException;
 
+import java.time.format.DateTimeParseException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,5 +26,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
         return new ResponseEntity<>(ex.toString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException ex) {
+        return new ResponseEntity<>("DateTimeParseException: Wrong date format, please use \"yyyy-MM-dd\"",HttpStatus.BAD_REQUEST);
     }
 }
