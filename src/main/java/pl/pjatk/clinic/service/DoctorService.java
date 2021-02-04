@@ -6,6 +6,7 @@ import pl.pjatk.clinic.exception.DoctorException;
 import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.repository.DoctorRepository;
+import pl.pjatk.clinic.repository.PatientRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,12 +15,17 @@ import java.util.Optional;
 public class DoctorService {
 
     DoctorRepository doctorRepository;
+    PatientRepository patientRepository;
 
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(DoctorRepository doctorRepository, PatientRepository patientRepository) {
         this.doctorRepository = doctorRepository;
+        this.patientRepository = patientRepository;
     }
 
-    public List<Doctor> findAll() {
+    public List<Doctor> findAll() throws DoctorException {
+        if (doctorRepository.findAll().isEmpty()) {
+            throw new DoctorException("There are no doctors");
+        }
         return doctorRepository.findAll();
     }
 
@@ -28,13 +34,15 @@ public class DoctorService {
         if (doctorId.isPresent()) {
             return Optional.ofNullable(doctorId.get().getPatientList());
         } else {
-            throw new DoctorException("There is no patients!");
+            throw new DoctorException("There are no patients!");
         }
     }
 
     public Optional<Doctor> findById(int id) throws DoctorException {
         if (id < 0) {
-            throw new DoctorException("There is no negative IDs");
+            throw new DoctorException("There are no negative IDs");
+        } else if (doctorRepository.findById(id).isEmpty()) {
+            throw new DoctorException("No doctor with ID: " + id);
         } else {
             return doctorRepository.findById(id);
         }
@@ -71,5 +79,4 @@ public class DoctorService {
     public Doctor save(Doctor doctor) {
         return doctorRepository.save(doctor);
     }
-
 }

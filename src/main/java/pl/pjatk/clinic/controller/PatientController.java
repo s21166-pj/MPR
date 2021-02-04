@@ -8,7 +8,7 @@ import pl.pjatk.clinic.model.Patient;
 import pl.pjatk.clinic.service.PatientService;
 import pl.pjatk.clinic.validators.Validator;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Patient>> findAll() {
+    public ResponseEntity<List<Patient>> findAll() throws PatientException {
         return ResponseEntity.ok(patientService.findAll());
     }
 
@@ -48,7 +48,7 @@ public class PatientController {
     }
 
     @GetMapping("/bydate/{date}")
-    public ResponseEntity<List<Patient>> findAllByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws PatientException {
+    public ResponseEntity<List<Patient>> findAllByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) throws PatientException {
         List<Patient> allByDate = patientService.findAllByDate(date);
         if (!allByDate.isEmpty()) {
             return ResponseEntity.ok(allByDate);
@@ -70,8 +70,15 @@ public class PatientController {
     }
 
     @PutMapping("/{pesel}")
-    public ResponseEntity<Patient> update(@PathVariable String pesel, @RequestBody Patient patient) {
-        return ResponseEntity.ok(patientService.update(pesel, patient));
+    public ResponseEntity<Patient> update(@PathVariable String pesel, @RequestBody Patient patient) throws PatientException {
+        Validator validator = new Validator();
+        List<String> messages;
+        messages = validator.validatePatient(patient);
+        if (messages.isEmpty()) {
+            return ResponseEntity.ok(patientService.update(pesel, patient));
+        } else {
+            throw new PatientException(messages.toString());
+        }
     }
 
     @DeleteMapping("/{id}")

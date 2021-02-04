@@ -3,10 +3,13 @@ package pl.pjatk.clinic.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pjatk.clinic.exception.DoctorException;
+import pl.pjatk.clinic.exception.PatientException;
 import pl.pjatk.clinic.model.Doctor;
 import pl.pjatk.clinic.model.Patient;
+import pl.pjatk.clinic.service.ConsultationService;
 import pl.pjatk.clinic.service.DoctorService;
 import pl.pjatk.clinic.validators.Validator;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,13 +18,15 @@ import java.util.Optional;
 public class DoctorController {
 
     private DoctorService doctorService;
+    private ConsultationService consultationService;
 
-    public DoctorController(DoctorService doctorService) {
+    public DoctorController(DoctorService doctorService, ConsultationService consultationService) {
         this.doctorService = doctorService;
+        this.consultationService = consultationService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Doctor>> findAll() {
+    public ResponseEntity<List<Doctor>> findAll() throws DoctorException {
         return ResponseEntity.ok(doctorService.findAll());
     }
 
@@ -55,6 +60,12 @@ public class DoctorController {
     @PutMapping("/{id}")
     public ResponseEntity<Doctor> update(@PathVariable int id, @RequestBody Doctor doctor) {
         return ResponseEntity.ok(doctorService.update(id, doctor));
+    }
+
+    @PutMapping("delay/{doctorId}/{patientId}")
+    public ResponseEntity<Void> delayConsultationByWeekById(@PathVariable int doctorId,@PathVariable int patientId) throws DoctorException, PatientException {
+        consultationService.delayConsultationByWeekById(doctorId,patientId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
