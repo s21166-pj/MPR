@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException ex) {
         return new ResponseEntity<>("DateTimeParseException: Wrong date format, please use \"yyyy-MM-dd\"",HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<Object> handleNumberFormatException(NumberFormatException ex) {
+        return new ResponseEntity<>(ex.toString() + "  ID can only be a number",HttpStatus.BAD_REQUEST);
+    }
 }
