@@ -70,7 +70,6 @@ public class Doctor {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", patientList=" + patientList +
                 '}';
     }
 }
