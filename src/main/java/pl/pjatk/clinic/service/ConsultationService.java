@@ -27,9 +27,9 @@ public class ConsultationService {
         Optional<Doctor> doctorOfPatient = doctorService.findById(doctorId);
 
         if (doctorId != patientsDoctorId) {
-            throw new DoctorException("You cannot use this option on not your patient!");
+            throw new DoctorException("You can use this only on your patients!");
         } else {
-            LocalDate laterDate = patientGet.getDateOfConsultation().plusDays(7l);
+            LocalDate laterDate = patientGet.getDateOfConsultation().plusDays(7L);
             patientGet.setDateOfConsultation(laterDate);
             patientService.update(patientGet.getPesel(), patientGet);
         }

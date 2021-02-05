@@ -58,7 +58,7 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Doctor> update(@PathVariable int id, @RequestBody Doctor doctor) {
+    public ResponseEntity<Doctor> update(@PathVariable int id, @RequestBody Doctor doctor) throws DoctorException {
         return ResponseEntity.ok(doctorService.update(id, doctor));
     }
 

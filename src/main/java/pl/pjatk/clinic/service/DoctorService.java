@@ -30,16 +30,16 @@ public class DoctorService {
     }
 
     public Optional<List<Patient>> listOfPatients(int id) throws DoctorException {
-        Optional<Doctor> doctorId = doctorRepository.findById(id);
-        if (doctorId.isPresent()) {
+        Optional<Doctor> doctorId = this.findById(id);
+        if (!doctorId.get().getPatientList().isEmpty()) {
             return Optional.ofNullable(doctorId.get().getPatientList());
         } else {
-            throw new DoctorException("There are no patients!");
+            throw new DoctorException("There are no patients assigned to a doctor!");
         }
     }
 
     public Optional<Doctor> findById(int id) throws DoctorException {
-        if (id < 0) {
+        if (id < 1) {
             throw new DoctorException("There are no negative IDs");
         } else if (doctorRepository.findById(id).isEmpty()) {
             throw new DoctorException("No doctor with ID: " + id);
@@ -48,8 +48,8 @@ public class DoctorService {
         }
     }
 
-    public Doctor update(int id, Doctor updatedDoctor) {
-        Optional<Doctor> doctorOptional = doctorRepository.findById(id);
+    public Doctor update(int id, Doctor updatedDoctor) throws DoctorException {
+        Optional<Doctor> doctorOptional = this.findById(id);
         if (doctorOptional.isPresent()) {
             Doctor doctor = doctorOptional.get();
             doctor.setName(updatedDoctor.getName());
@@ -61,10 +61,10 @@ public class DoctorService {
     }
 
     public void deleteById(int id) throws DoctorException {
-        if (doctorRepository.findById(id).isPresent()) {
+        if (this.findById(id).isPresent()) {
             doctorRepository.deleteById(id);
         } else {
-            throw new DoctorException("There is no such patient to delete");
+            throw new DoctorException("There is no such Doctor to delete");
         }
     }
 
